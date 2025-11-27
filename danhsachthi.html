@@ -232,7 +232,7 @@
             </div>
         </div>
     </div>
-
+    <script src="lock_system.js"></script>
     <script>
         // --- GIỮ NGUYÊN TOÀN BỘ SCRIPT GỐC (KHÔNG CHỈNH SỬA LOGIC) ---
         const CONFIG = { ORIGINAL_API: 'https://tidtu-worker-examlist.ngtuonghy.workers.dev/api/v1/pdaotao/scraping/examlist', PROXY: 'https://api.codetabs.com/v1/proxy/?quest=', BASE_URL: 'https://pdaotao.duytan.edu.vn/', CACHE_KEY: 'DTU_EXAM_CACHE_V1', CACHE_TIME_KEY: 'DTU_EXAM_LAST_UPDATE', REFRESH_INTERVAL: 120000 }; const COLOR_PALETTE = ['#4a90e2', '#28a745', '#ffc107', '#dc3545', '#6f42c1', '#fd7e14', '#17a2b8', '#e83e8c', '#00bcd4', '#ffeb3b', '#8bc34a', '#ff9800', '#f44336', '#9c27b0', '#607d8b', '#009688', '#ff5722', '#673ab7', '#3f51b5', '#03a9f4', '#007bff', '#20c997', '#adb5bd', '#343a40']; const dom = { list: document.getElementById('exam-list'), search: document.getElementById('search-box'), status: document.getElementById('status-bar') }; let allExams = []; const dateColorMap = new Map(); const parseDate = (dateString) => { try { const [d, m, y] = dateString.split(' ')[1].split('/'); return new Date(y, m - 1, d); } catch { return null; } }; const getColorByDate = (dateString) => { const d = parseDate(dateString); if (!d) return '#6c757d'; const key = `${d.getDate()}/${d.getMonth()}/${d.getFullYear()}`; if (!dateColorMap.has(key)) { dateColorMap.set(key, COLOR_PALETTE[dateColorMap.size % COLOR_PALETTE.length]); } return dateColorMap.get(key); }; const isNew = (dateString) => { const d = parseDate(dateString); if (!d) return false; const today = new Date(); today.setHours(0, 0, 0, 0); const check = new Date(d); check.setHours(0, 0, 0, 0); return (today - check) <= (3 * 86400000); }; function renderSkeleton() { dom.list.innerHTML = Array(8).fill('<div class="skeleton"></div>').join(''); }
@@ -264,4 +264,5 @@
 
 
 </html>
+
 
