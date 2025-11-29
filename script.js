@@ -36,38 +36,46 @@ document.addEventListener("DOMContentLoaded", function () {
     }
     updateCounter(null);
 
-    clearButton.addEventListener("click", function () {
-        searchInput.value = "";
-        clearButton.style.display = "none";
-        searchInput.focus();
-        resultDisplay.innerHTML = welcomeMessage;
-        suggestionsWrapper.style.display = "none";
-        suggestionActiveIndex = -1;
-        clearTimeout(searchTimer);
-        updateCounter(null);
-    });
+    // Xử lý nút Xóa (X)
+    if (clearButton) {
+        clearButton.addEventListener("click", function () {
+            searchInput.value = "";
+            clearButton.style.display = "none";
+            searchInput.focus();
+            resultDisplay.innerHTML = welcomeMessage;
+            suggestionsWrapper.style.display = "none";
+            suggestionActiveIndex = -1;
+            clearTimeout(searchTimer);
+            updateCounter(null);
+            document.body.classList.remove('search-active');
+        });
+    }
 
     searchInput.addEventListener("input", function () {
         clearTimeout(searchTimer);
         const query = searchInput.value;
         const normalizedQuery = normalizeText(query);
+
         // === KIỂM TRA TỪ KHÓA ĐẶC BIỆT "ỦNG HỘ" ===
         if (normalizedQuery === 'ung ho' || normalizedQuery === 'donate' || normalizedQuery === 'quyen gop') {
-            showDonateModal(); // Gọi hàm hiển thị popup
-            return; // Dừng, không chạy code tìm kiếm bên dưới nữa
+            if (donateModal) showDonateModal();
+            return;
         }
         // ============================================
+
         suggestionActiveIndex = -1;
 
         if (normalizedQuery.length > 0) {
             const suggestions = findSuggestions(normalizedQuery);
             displaySuggestions(suggestions, query);
+            document.body.classList.add('search-active'); // Kích hoạt CSS ẩn menu nút bấm
         } else {
             suggestionsWrapper.style.display = "none";
+            document.body.classList.remove('search-active');
         }
 
         if (query.length > 0) {
-            clearButton.style.display = "block";
+            if (clearButton) clearButton.style.display = "block";
             const bestMatches = performSearch();
 
             if (bestMatches && bestMatches.length > 0) {
@@ -76,13 +84,12 @@ document.addEventListener("DOMContentLoaded", function () {
                         .map(kw => `<span class='related-keyword-tag'>${kw}</span>`)
                         .join('');
 
-                    // === THAY ĐỔI Ở ĐÂY ===
                     // Tự động xóa tất cả các thuộc tính target='_blank'
                     const cleanAnswer = match.answer.replace(/target='_blank'/g, "");
 
                     return `
                         <div class="result-item">
-                            <button class="copy-card-btn" title="Chụp ảnh thẻ này">📋</button>                           
+                            <button class="copy-card-btn" title="Chụp ảnh toàn bộ nội dung">📋</button>                           
                             <div class="result-answer">${cleanAnswer}</div>
                             <div class="result-keywords">
                                 <strong>Từ khóa liên quan:</strong>
@@ -102,7 +109,7 @@ document.addEventListener("DOMContentLoaded", function () {
                 updateCounter(0);
             }
         } else {
-            clearButton.style.display = "none";
+            if (clearButton) clearButton.style.display = "none";
             resultDisplay.innerHTML = welcomeMessage;
             updateCounter(null);
         }
@@ -256,92 +263,96 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     });
 
-    // --- HÀM XỬ LÝ SAO CHÉP ẢNH THẺ (ĐÃ CẬP NHẬT THEO YÊU CẦU MỚI) ---
+    // =========================================================================
+    // --- HÀM XỬ LÝ CHỤP ẢNH THẺ (ĐÃ CẬP NHẬT: TỰ ĐỘNG BUNG NỘI DUNG) ---
+    // =========================================================================
     function handleCopyCard(button) {
         const card = button.closest('.result-item');
-        // Chỉ target phần nội dung câu trả lời (result-answer)
+        // Chỉ target phần nội dung câu trả lời (result-answer) để chụp
         const answerDivToCapture = card.querySelector('.result-answer');
 
         if (!answerDivToCapture) return;
 
         const originalButtonContent = button.innerHTML;
+        button.innerHTML = '⏳'; // Hiện icon chờ
 
-        // Dùng html2canvas
-        html2canvas(answerDivToCapture, {
-            useCORS: true,
-            logging: false,
-            scale: 2,
-            backgroundColor: '#ffffff', // Đảm bảo ảnh có nền trắng
-            // === KHỐI onclone ĐỂ THÊM WATERMARK ĐÃ BỊ LOẠI BỎ HOÀN TOÀN ===
-        }).then(canvas => {
+        // 1. THÊM CLASS ĐỂ "BUNG" HẾT NỘI DUNG RA TRƯỚC KHI CHỤP
+        // Class 'force-full-height' phải được định nghĩa trong CSS (như đã hướng dẫn ở bước trước)
+        answerDivToCapture.classList.add('force-full-height');
 
-            // Chuyển canvas sang Blob (dạng file ảnh)
-            canvas.toBlob(function (blob) {
-                if (blob) {
-                    try {
-                        // Dùng Clipboard API để copy ảnh
-                        navigator.clipboard.write([
-                            new ClipboardItem({
-                                'image/png': blob
-                            })
-                        ]);
+        // Đợi 1 xíu để trình duyệt render xong giao diện đã bung ra rồi mới chụp
+        setTimeout(() => {
+            html2canvas(answerDivToCapture, {
+                useCORS: true,
+                logging: false,
+                scale: 2, // Tăng độ nét
+                backgroundColor: '#ffffff',
+                // Cho phép chụp chiều cao đầy đủ (scrollHeight)
+                height: answerDivToCapture.scrollHeight,
+                windowHeight: answerDivToCapture.scrollHeight
+            }).then(canvas => {
 
-                        // Phản hồi thành công
-                        button.innerHTML = '✅'; // Đã copy!
-                        setTimeout(() => {
-                            button.innerHTML = originalButtonContent;
-                        }, 2000);
+                // 2. CHỤP XONG RỒI THÌ XÓA CLASS ĐI ĐỂ GIAO DIỆN GỌN LẠI
+                answerDivToCapture.classList.remove('force-full-height');
 
-                    } catch (error) {
-                        console.error('Lỗi khi sao chép vào clipboard:', error);
-                        alert('Không thể sao chép. Lỗi: ' + error.message);
-                        button.innerHTML = '❌'; // Lỗi
-                        setTimeout(() => {
-                            button.innerHTML = originalButtonContent;
-                        }, 2000);
+                // Chuyển canvas sang Blob (file ảnh)
+                canvas.toBlob(function (blob) {
+                    if (blob) {
+                        try {
+                            // Copy vào Clipboard
+                            const item = new ClipboardItem({ 'image/png': blob });
+                            navigator.clipboard.write([item]).then(() => {
+                                button.innerHTML = '✅';
+                                setTimeout(() => { button.innerHTML = originalButtonContent; }, 2000);
+                            }).catch(err => {
+                                console.error('Lỗi clipboard:', err);
+                                alert("Trình duyệt chặn copy ảnh trực tiếp. Vui lòng tải ảnh về thủ công (nếu cần).");
+                                button.innerHTML = originalButtonContent;
+                            });
+
+                        } catch (error) {
+                            console.error('Lỗi tạo ClipboardItem:', error);
+                            button.innerHTML = '❌';
+                            setTimeout(() => { button.innerHTML = originalButtonContent; }, 2000);
+                        }
                     }
-                } else {
-                    alert('Không thể tạo ảnh.');
-                }
-            }, 'image/png');
+                }, 'image/png');
 
-        }).catch(err => {
-            // Xử lý nếu html2canvas thất bại
-            console.error('html2canvas thất bại:', err);
-            alert('Không thể chụp ảnh thẻ. Lỗi: ' + err.message);
-            button.innerHTML = '❌';
-            setTimeout(() => {
-                button.innerHTML = originalButtonContent;
-            }, 2000);
-        });
+            }).catch(err => {
+                console.error('html2canvas lỗi:', err);
+                // Dù lỗi cũng phải xóa class để trả lại giao diện cũ
+                answerDivToCapture.classList.remove('force-full-height');
+
+                alert('Không thể chụp ảnh. Lỗi: ' + err.message);
+                button.innerHTML = '❌';
+                setTimeout(() => { button.innerHTML = originalButtonContent; }, 2000);
+            });
+        }, 100); // Delay 100ms
     }
-    // --- CÁC HÀM ĐIỀU KHIỂN POPUP ỦNG HỘ ---
 
+    // --- CÁC HÀM ĐIỀU KHIỂN POPUP ỦNG HỘ ---
     function showDonateModal() {
-        donateModal.style.display = "flex";
+        if (donateModal) donateModal.style.display = "flex";
     }
 
     function hideDonateModal() {
-        donateModal.style.display = "none";
+        if (donateModal) donateModal.style.display = "none";
     }
 
-    // Nút X (nút thoát)
-    closeModalBtn.addEventListener("click", hideDonateModal);
+    if (closeModalBtn) closeModalBtn.addEventListener("click", hideDonateModal);
 
-    // Đóng khi click ra ngoài vùng ảnh
-    donateModal.addEventListener("click", function (event) {
-        // Chỉ đóng khi click vào lớp nền mờ (modal-overlay)
-        // chứ không phải click vào nội dung (modal-content)
-        if (event.target === donateModal) {
-            hideDonateModal();
-        }
-    });
+    if (donateModal) {
+        donateModal.addEventListener("click", function (event) {
+            if (event.target === donateModal) {
+                hideDonateModal();
+            }
+        });
+    }
 
-    // Đóng khi nhấn phím "Escape" (Esc)
     document.addEventListener("keydown", function (event) {
-        if (event.key === "Escape" && donateModal.style.display === "flex") {
+        if (event.key === "Escape" && donateModal && donateModal.style.display === "flex") {
             hideDonateModal();
         }
     });
-}); // Hết DOMContentLoaded
 
+});
