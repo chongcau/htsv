@@ -58,7 +58,8 @@
             flex: 1;
             width: 100%;
             max-width: 1000px;
-            padding: 30px 20px;
+            padding: 10px 20px;
+            /* Đổi từ 30px thành 10px */
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -91,27 +92,21 @@
         }
 
         .logo-area img {
-            max-width: 220px;
+            max-width: 180px;
+            /* Đổi từ 220px thành 180px */
             width: 100%;
             height: auto;
             display: block;
-
-            /* --- THỦ THUẬT LÀM NÉT ẢNH --- */
-            /* 1. Ép trình duyệt vẽ cạnh sắc nét hơn */
             image-rendering: -webkit-optimize-contrast;
             image-rendering: crisp-edges;
-
-            /* 2. Tăng tương phản 15% và bão hòa màu 10% để ảnh trong trẻo hơn */
             filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.15)) contrast(1.15) saturate(1.1);
-
-            /* 3. Kích hoạt GPU render để mượt hơn */
             transform: translateZ(0);
         }
 
-        /* --- 3. ĐỒNG HỒ --- */
         .time-container {
             text-align: center;
-            margin-bottom: 40px;
+            margin-bottom: 20px;
+            /* Đổi từ 40px thành 20px */
             color: #fff;
             text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
             animation: fadeIn 0.8s ease-out;
@@ -145,7 +140,8 @@
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 16px;
+            gap: 10px;
+            /* Đổi từ 16px thành 10px */
             max-width: 400px;
         }
 
@@ -178,23 +174,21 @@
             text-align: left;
             width: 100%;
             max-width: 380px;
-            padding: 16px 20px;
+            padding: 10px 15px;
+            /* Đổi từ '16px 20px' thành '10px 15px' */
 
             font-size: 16px;
             font-weight: 700;
             color: #222;
             text-decoration: none;
-
             background: rgba(255, 255, 255, 0.6);
             backdrop-filter: blur(12px);
             -webkit-backdrop-filter: blur(12px);
-
             border: 1px solid rgba(255, 255, 255, 0.8);
             border-radius: 18px;
+            /* Có thể giảm radius nếu muốn nút vuông hơn, ví dụ 12px */
             box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
-
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
-
             opacity: 0;
             animation: slideIn 0.5s ease-out forwards;
         }
@@ -279,7 +273,8 @@
 
         /* --- 7. FOOTER --- */
         .footer {
-            padding: 25px 10px;
+            padding: 10px 10px;
+            /* Đổi từ 25px thành 10px */
             width: 100%;
             text-align: center;
             font-size: 13px;
@@ -411,6 +406,10 @@
                     <i class="fa-solid fa-list-check"></i> Danh Sách Thi
                 </a>
 
+                <a href="https://chongcau.github.io/hocphi/" class="btn">
+                    <i class="fa-solid fa-coins"></i> Tính học phí
+                </a>
+
                 <a href="https://pdaotao.duytan.edu.vn/ANNOUNCEMENT/Default.aspx?lang=VN" class="btn">
                     <i class="fa-regular fa-bell"></i> THÔNG BÁO PHÒNG ĐÀO TẠO
                 </a>
@@ -432,7 +431,7 @@
                 </a>
 
                 <a href="https://www.facebook.com/groups/sinhviendtu" class="btn">
-                    <i class="fa-brands fa-facebook"></i> Groups facebook Duy Tân
+                    <i class="fa-brands fa-facebook"></i> Groups Duy Tân
                 </a>
 
                 <a href="https://m.me/ch/Abbuj41p46CryBBU/" class="btn">
@@ -441,6 +440,9 @@
 
                 <a href="https://m.me/ch/AbZLMAFZlqTfbFNj/" class="btn">
                     <i class="fa-brands fa-facebook-messenger"></i> Chat 🎓DTU Community
+                </a>
+                <a href="https://chongcau.github.io/daihocduytan/" class="btn">
+                    <i class="fa-solid fa-toolbox"></i>Tiện ích
                 </a>
             </div>
         </div>
