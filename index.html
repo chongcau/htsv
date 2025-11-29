@@ -1,198 +1,378 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="vi">
 
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
-    <title>Tân</title>
+    <title>Cổng Thông Tin & Tra Cứu DTU</title>
     <link rel="icon" href="logoo.png" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
 
     <style>
-        /* --- 1. CẤU HÌNH CHUNG --- */
         * {
             box-sizing: border-box;
             outline: none;
-            -webkit-user-select: none;
-            user-select: none;
             -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            /* Chặn bôi đen */
         }
 
-        html,
+        input,
+        textarea {
+            user-select: text !important;
+        }
+
         body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            /* Khóa cuộn trên PC */
             margin: 0;
             padding: 0;
-            width: 100%;
-            min-height: 100vh;
-        }
-
-        body {
             font-family: 'Nunito', sans-serif;
             display: flex;
             flex-direction: column;
             align-items: center;
-            /* Nền Gradient nhẹ nhàng */
-            background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #a18cd1, #fbc2eb);
-            background-size: 400% 400%;
-            animation: gradientBG 15s ease infinite;
-            overflow-y: auto;
+
+            /* --- QUAN TRỌNG: MÀU NỀN HỒNG PHẤN (PEACH) --- */
+            /* Màu này giúp logo Đỏ nổi bật và sắc nét nhất */
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            /* Dự phòng */
+            background: linear-gradient(to bottom, #ffe2e2, #eec0c6);
+            /* Màu Peach hồng nhẹ */
+            /* Hoặc thử màu này nếu thích cam hơn: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%); */
+
             color: #333;
         }
 
-        @keyframes gradientBG {
-            0% {
-                background-position: 0% 50%;
-            }
-
-            50% {
-                background-position: 100% 50%;
-            }
-
-            100% {
-                background-position: 0% 50%;
-            }
-        }
-
-        .container {
+        .main-container {
             flex: 1;
             width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* =========================================
+           2. LOGO & ĐỒNG HỒ (MÀU ĐỎ ĐÔ)
+        ========================================= */
+        .header-wrapper {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
             max-width: 1000px;
-            padding: 10px 20px;
-            /* Đổi từ 30px thành 10px */
+            gap: 40px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+            flex-shrink: 0;
+        }
+
+        .logo-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- CẤU HÌNH LOGO SIÊU NÉT --- */
+        .logo-area img {
+            max-width: 160px;
+            /* Tăng kích thước hiển thị lên chút */
+            height: auto;
+
+            /* TẮT BÓNG ĐỔ ĐỂ KHÔNG BỊ NHÒE */
+            filter: none !important;
+
+            /* Tăng cường độ nét cạnh ảnh */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        .time-container {
+            flex: 1;
             display: flex;
             flex-direction: column;
             justify-content: center;
             align-items: center;
-        }
 
-        /* --- 2. LOGO (ĐÃ NÂNG CẤP ĐỘ NÉT) --- */
-        .logo-area {
-            margin-bottom: 20px;
-            width: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding-left: 20px;
-
-            /* Animation logo trôi nhẹ */
-            animation: floatLogo 3s ease-in-out infinite;
-        }
-
-        @keyframes floatLogo {
-
-            0%,
-            100% {
-                transform: translateY(0);
-            }
-
-            50% {
-                transform: translateY(-5px);
-            }
-        }
-
-        .logo-area img {
-            max-width: 180px;
-            /* Đổi từ 220px thành 180px */
-            width: 100%;
-            height: auto;
-            display: block;
-            image-rendering: -webkit-optimize-contrast;
-            image-rendering: crisp-edges;
-            filter: drop-shadow(0 5px 15px rgba(0, 0, 0, 0.15)) contrast(1.15) saturate(1.1);
-            transform: translateZ(0);
-        }
-
-        .time-container {
-            text-align: center;
-            margin-bottom: 20px;
-            /* Đổi từ 40px thành 20px */
-            color: #fff;
-            text-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 0.8s ease-out;
+            /* ĐỔI MÀU CHỮ SANG ĐỎ ĐÔ/TRẮNG ĐỂ HỢP NỀN */
+            /* Vì nền sáng, chữ nên màu tối hoặc đỏ đậm mới đọc được */
+            color: #b71c1c;
+            /* Đỏ đậm DTU */
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
         }
 
         #clock {
-            font-size: 40px;
+            font-size: 36px;
+            /* To hơn chút cho đẹp */
             font-weight: 800;
-            letter-spacing: 2px;
             line-height: 1;
-            margin-bottom: 5px;
+            white-space: nowrap;
         }
 
         #date {
-            font-size: 16px;
+            font-size: 15px;
             font-weight: 700;
-            opacity: 1;
-            text-transform: capitalize;
+            white-space: nowrap;
+            margin-top: 5px;
+            color: #555;
+            /* Ngày tháng màu xám đậm */
         }
 
-        /* --- 4. LAYOUT 2 CỘT --- */
-        .columns-wrapper {
+        /* =========================================
+           3. THANH TÌM KIẾM
+        ========================================= */
+        .search-section-wrapper {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 25px;
+            z-index: 100;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .search-box {
+            display: flex;
+            width: 100%;
+        }
+
+        .input-wrapper {
+            position: relative;
+            flex-grow: 1;
+            display: flex;
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 20px;
+            padding-right: 130px;
+            font-size: 16px;
+            border: 2px solid #fff;
+            /* Viền trắng */
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.85);
+            /* Nền trắng đục */
+            box-shadow: 0 5px 15px rgba(183, 28, 28, 0.1);
+            /* Bóng đỏ nhạt */
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+            color: #333;
+        }
+
+        #searchInput:focus {
+            border-color: #b71c1c;
+            /* Focus viền đỏ */
+            background: #fff;
+            box-shadow: 0 4px 20px rgba(183, 28, 28, 0.2);
+        }
+
+        #clearButton {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: transparent;
+            color: #999;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+            padding: 0;
+        }
+
+        #resultCounter {
+            position: absolute;
+            right: 55px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b71c1c;
+            font-size: 0.9em;
+            font-weight: 700;
+            pointer-events: none;
+        }
+
+        #suggestionsWrapper {
+            position: absolute;
+            top: 100%;
+            left: 20px;
+            right: 20px;
+            background-color: #fff;
+            border: 1px solid #eee;
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 101;
+            display: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestion-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* =========================================
+           4. KẾT QUẢ TÌM KIẾM
+        ========================================= */
+        #resultDisplay {
+            display: none;
+            width: 100%;
+            margin-top: 20px;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            font-family: 'Inter', sans-serif;
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+
+        .result-item {
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.95);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-answer {
+            padding: 20px 24px;
+            line-height: 1.7;
+            flex-grow: 1;
+            overflow-wrap: break-word;
+            user-select: text;
+        }
+
+        .result-answer strong {
+            color: #d9534f;
+        }
+
+        .result-keywords {
+            padding: 15px 24px;
+            background-color: #f1f3f5;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        @media (min-width: 600px) {
+            .result-item {
+                flex-direction: row;
+            }
+
+            .result-answer {
+                flex-basis: 70%;
+            }
+
+            .result-keywords {
+                flex-basis: 30%;
+                border-top: none;
+                border-left: 1px solid #e9ecef;
+            }
+        }
+
+        /* =========================================
+           5. MENU NÚT BẤM (STYLE TRẮNG SẠCH)
+        ========================================= */
+        #mainMenuContainer {
             display: flex;
             flex-direction: row;
             width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
             justify-content: center;
             gap: 40px;
+            padding: 0 10px;
+            transition: opacity 0.3s ease;
         }
 
         .column {
             flex: 1;
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            /* Đổi từ 16px thành 10px */
-            max-width: 400px;
+            gap: 20px;
+            width: 100%;
+            align-items: stretch;
         }
 
-        .column:first-child {
-            align-items: flex-end;
-        }
-
-        .column:last-child {
-            align-items: flex-start;
-        }
-
-        /* --- 5. TIÊU ĐỀ CỘT --- */
         .section-title {
-            font-size: 16px;
+            font-size: 18px;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: #8B0000;
-            margin-bottom: 10px;
+            color: #b71c1c;
+            /* Đỏ đậm */
+            margin-bottom: 5px;
             font-weight: 800;
-            width: 100%;
             text-align: center;
-            opacity: 1;
         }
 
-        /* --- 6. NÚT BẤM --- */
         .btn {
             display: flex;
             align-items: center;
             justify-content: flex-start;
             text-align: left;
             width: 100%;
-            max-width: 380px;
-            padding: 10px 15px;
-            /* Đổi từ '16px 20px' thành '10px 15px' */
-
+            padding: 16px 20px;
             font-size: 16px;
             font-weight: 700;
-            color: #222;
+            color: #444;
             text-decoration: none;
-            background: rgba(255, 255, 255, 0.6);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.8);
-            border-radius: 18px;
-            /* Có thể giảm radius nếu muốn nút vuông hơn, ví dụ 12px */
-            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+
+            /* Nền trắng đục cho hợp nền Peach */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 1);
+            border-radius: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+
             transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
             opacity: 0;
             animation: slideIn 0.5s ease-out forwards;
         }
 
+        .btn i {
+            margin-right: 15px;
+            font-size: 20px;
+            width: 30px;
+            text-align: center;
+            flex-shrink: 0;
+            color: #b71c1c;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            background: #fff;
+            box-shadow: 0 8px 15px rgba(183, 28, 28, 0.15);
+            /* Bóng đỏ khi hover */
+            color: #b71c1c;
+            border-color: #b71c1c;
+        }
+
+        .btn:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Animation delays */
         .column:first-child .btn:nth-of-type(1) {
             animation-delay: 0.1s;
         }
@@ -211,6 +391,10 @@
 
         .column:first-child .btn:nth-of-type(5) {
             animation-delay: 0.5s;
+        }
+
+        .column:first-child .btn:nth-of-type(6) {
+            animation-delay: 0.6s;
         }
 
         .column:last-child .btn:nth-of-type(1) {
@@ -233,6 +417,10 @@
             animation-delay: 0.55s;
         }
 
+        .column:last-child .btn:nth-of-type(6) {
+            animation-delay: 0.65s;
+        }
+
         @keyframes slideIn {
             from {
                 opacity: 0;
@@ -245,221 +433,140 @@
             }
         }
 
-        .btn i {
-            margin-right: 18px;
-            font-size: 22px;
-            width: 30px;
-            text-align: center;
-            flex-shrink: 0;
-            color: #8B0000;
-            transition: transform 0.3s;
+        /* Trạng thái tìm kiếm */
+        body.search-active #mainMenuContainer {
+            display: none !important;
         }
 
-        .btn:hover {
-            transform: translateY(-5px) scale(1.02);
-            background: rgba(151, 250, 144, 0.95);
-            box-shadow: 0 12px 25px rgba(0, 0, 0, 0.1);
-            color: #8B0000;
-            border-color: red;
+        body.search-active #resultDisplay {
+            display: grid !important;
+            animation: fadeInResults 0.3s ease-out;
         }
 
-        .btn:hover i {
-            transform: scale(1.2) rotate(-10deg);
+        @keyframes fadeInResults {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
         }
 
-        .btn:active {
-            transform: scale(0.98);
-        }
-
-        /* --- 7. FOOTER --- */
         .footer {
-            padding: 10px 10px;
-            /* Đổi từ 25px thành 10px */
+            padding: 20px;
             width: 100%;
             text-align: center;
             font-size: 13px;
-            color: #444;
+            color: #666;
             font-weight: 600;
-            animation: fadeIn 1s ease-out 1s forwards;
-            opacity: 0;
+            margin-top: auto;
+            opacity: 0.8;
         }
 
-        @keyframes fadeIn {
-            to {
-                opacity: 1;
-            }
-        }
-
-        /* --- 8. RESPONSIVE --- */
+        /* Responsive Mobile */
         @media (max-width: 850px) {
-            .container {
-                padding-top: 40px;
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
             }
 
-            .columns-wrapper {
+            .header-wrapper,
+            #mainMenuContainer {
                 flex-direction: column;
+                gap: 20px;
+                max-width: 500px;
+            }
+
+            .logo-area,
+            .time-container {
                 align-items: center;
-                gap: 30px;
+                justify-content: center;
             }
 
             .column {
-                width: 100%;
-                max-width: 450px;
-                align-items: center !important;
+                align-items: stretch !important;
             }
 
-            .btn {
-                justify-content: center;
-                max-width: 100%;
+            #resultDisplay {
+                grid-template-columns: 1fr;
             }
-
-            .logo-area {
-                padding-left: 0;
-                margin-bottom: 20px;
-            }
-
-            #clock {
-                font-size: 32px;
-            }
-        }
-
-        @media (max-width: 380px) {
-            .logo-area img {
-                max-width: 180px;
-            }
-
-            .btn {
-                font-size: 14px;
-                padding: 12px 15px;
-            }
-
-            #clock {
-                font-size: 28px;
-            }
-        }
-
-        @media (max-height: 600px) {
-            .container {
-                padding-top: 10px;
-            }
-
-            .logo-area img {
-                max-width: 120px;
-            }
-
-            .time-container {
-                margin-bottom: 15px;
-            }
-
-            #clock {
-                font-size: 24px;
-            }
-
-            .btn {
-                padding: 8px 15px;
-                font-size: 13px;
-                margin: 0;
-            }
-        }
-
-        ::-webkit-scrollbar {
-            width: 5px;
-        }
-
-        ::-webkit-scrollbar-track {
-            background: transparent;
-        }
-
-        ::-webkit-scrollbar-thumb {
-            background: rgba(0, 0, 0, 0.1);
-            border-radius: 10px;
         }
     </style>
 </head>
 
 <body>
+    <div class="main-container">
 
-    <div class="container">
-        <div class="logo-area">
-            <img src="logotrangchu.png" alt="Logo Đại Học Duy Tân">
+        <div class="header-wrapper">
+            <div class="logo-area">
+                <img src="logotrangchu.png" alt="Logo Đại Học Duy Tân">
+            </div>
+
+            <div class="time-container">
+                <div id="clock">00:00:00</div>
+                <div id="date">Đang tải...</div>
+            </div>
         </div>
 
-        <div class="time-container">
-            <div id="clock">00:00:00</div>
-            <div id="date">Đang tải...</div>
+        <div class="search-section-wrapper">
+            <div class="search-box">
+                <div class="input-wrapper">
+                    <input type="text" id="searchInput" placeholder="Nhập từ khóa (Ví dụ: học phí, điểm F)..."
+                        autocomplete="off">
+                    <span id="resultCounter"></span>
+                    <button id="clearButton" title="Xóa">×</button>
+                    <div id="suggestionsWrapper"></div>
+                </div>
+            </div>
         </div>
 
-        <div class="columns-wrapper">
+        <div id="resultDisplay"></div>
 
+        <div id="mainMenuContainer">
             <div class="column">
                 <div class="section-title">HỌC VỤ & ĐÀO TẠO</div>
-
-                <a href="https://mydtu.duytan.edu.vn/Signin.aspx" class="btn">
-                    <i class="fas fa-home"></i> Cổng thông tin Đại Học Duy Tân
-                </a>
-
-                <a href="lichthi.html" class="btn">
-                    <i class="fa-regular fa-calendar-days"></i> Tìm nhanh môn thi
-                </a>
-
-                <a href="danhsachthi.html" class="btn">
-                    <i class="fa-solid fa-list-check"></i> Danh Sách Thi
-                </a>
-
-                <a href="https://chongcau.github.io/hocphi/" class="btn">
-                    <i class="fa-solid fa-coins"></i> Tính học phí
-                </a>
-
-                <a href="https://pdaotao.duytan.edu.vn/ANNOUNCEMENT/Default.aspx?lang=VN" class="btn">
-                    <i class="fa-regular fa-bell"></i> THÔNG BÁO PHÒNG ĐÀO TẠO
-                </a>
-
-                <a href="https://pdaotao.duytan.edu.vn/EXAM_LIST/Default.aspx?lang=VN" class="btn">
-                    <i class="fa-solid fa-globe"></i> DANH SÁCH THI PHÒNG ĐÀO TẠO
-                </a>
+                <a href="https://mydtu.duytan.edu.vn/Signin.aspx" class="btn"><i class="fas fa-home"></i> Cổng thông tin
+                    ĐH Duy Tân</a>
+                <a href="lichthi.html" class="btn"><i class="fa-regular fa-calendar-days"></i> Tìm nhanh môn thi</a>
+                <a href="danhsachthi.html" class="btn"><i class="fa-solid fa-list-check"></i> Danh Sách Thi</a>
+                <a href="https://chongcau.github.io/hocphi/" class="btn"><i class="fa-solid fa-coins"></i> Tính học
+                    phí</a>
+                <a href="https://pdaotao.duytan.edu.vn/ANNOUNCEMENT/Default.aspx?lang=VN" class="btn"><i
+                        class="fa-regular fa-bell"></i> THÔNG BÁO PĐT</a>
+                <a href="https://pdaotao.duytan.edu.vn/EXAM_LIST/Default.aspx?lang=VN" class="btn"><i
+                        class="fa-solid fa-globe"></i> DANH SÁCH THI PĐT</a>
             </div>
 
             <div class="column">
                 <div class="section-title">CỘNG ĐỒNG & KẾT NỐI</div>
-
-                <a href="https://t.me/s/Dai_Hoc_Duy_Tan" class="btn">
-                    <i class="fab fa-telegram-plane"></i> DTU Official Community
-                </a>
-
-                <a href="https://t.me/chatsinhvienDTU" class="btn">
-                    <i class="fab fa-telegram-plane"></i> Chat DTU
-                </a>
-
-                <a href="https://www.facebook.com/groups/sinhviendtu" class="btn">
-                    <i class="fa-brands fa-facebook"></i> Groups Duy Tân
-                </a>
-
-                <a href="https://m.me/ch/Abbuj41p46CryBBU/" class="btn">
-                    <i class="fa-brands fa-facebook-messenger"></i> Kênh 🎓DTU Community
-                </a>
-
-                <a href="https://m.me/ch/AbZLMAFZlqTfbFNj/" class="btn">
-                    <i class="fa-brands fa-facebook-messenger"></i> Chat 🎓DTU Community
-                </a>
-                <a href="https://chongcau.github.io/daihocduytan/" class="btn">
-                    <i class="fa-solid fa-toolbox"></i>Tiện ích
-                </a>
+                <a href="https://t.me/s/Dai_Hoc_Duy_Tan" class="btn"><i class="fab fa-telegram-plane"></i> DTU Official
+                    Community</a>
+                <a href="https://t.me/chatsinhvienDTU" class="btn"><i class="fab fa-telegram-plane"></i> Chat DTU</a>
+                <a href="https://www.facebook.com/groups/sinhviendtu" class="btn"><i class="fa-brands fa-facebook"></i>
+                    Groups Duy Tân</a>
+                <a href="https://m.me/ch/Abbuj41p46CryBBU/" class="btn"><i class="fa-brands fa-facebook-messenger"></i>
+                    Kênh 🎓DTU Community</a>
+                <a href="https://m.me/ch/AbZLMAFZlqTfbFNj/" class="btn"><i class="fa-brands fa-facebook-messenger"></i>
+                    Chat 🎓DTU Community</a>
+                <a href="https://chongcau.github.io/daihocduytan/" class="btn"><i class="fa-solid fa-toolbox"></i> Tiện
+                    ích</a>
             </div>
         </div>
     </div>
 
-    <div class="footer">
-        © Thông tin chỉ mang tính chất tham khảo & hỗ trợ cộng đồng
-    </div>
-    <script src="lock_system.js"></script>
-    <script>
-        document.addEventListener('contextmenu', e => e.preventDefault());
-        document.addEventListener('keydown', e => {
-            if (e.key === "F12" || (e.ctrlKey && (e.key === "U" || e.key === "S")) || (e.ctrlKey && e.shiftKey && (e.key === "I" || e.key === "J"))) {
-                e.preventDefault();
-            }
-        });
+    <div class="footer">© Thông tin chỉ mang tính chất tham khảo & hỗ trợ cộng đồng</div>
 
+    <script src="lock_system.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Đồng hồ
         function updateClock() {
             const now = new Date();
             document.getElementById('clock').innerText = now.toLocaleTimeString('vi-VN', { hour12: false });
@@ -468,6 +575,38 @@
         }
         setInterval(updateClock, 1000);
         updateClock();
+
+        // Xử lý tìm kiếm
+        const searchInputDemo = document.getElementById('searchInput');
+        const clearButtonDemo = document.getElementById('clearButton');
+        if (searchInputDemo) {
+            searchInputDemo.addEventListener('input', function () {
+                if (this.value.trim() !== "") {
+                    document.body.classList.add('search-active');
+                    clearButtonDemo.style.display = 'block';
+                } else {
+                    document.body.classList.remove('search-active');
+                    clearButtonDemo.style.display = 'none';
+                }
+            });
+            if (clearButtonDemo) {
+                clearButtonDemo.addEventListener('click', function () {
+                    searchInputDemo.value = '';
+                    document.body.classList.remove('search-active');
+                    this.style.display = 'none';
+                    searchInputDemo.focus();
+                });
+            }
+        }
+
+        // BẢO MẬT
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = function (e) {
+            if (e.keyCode == 123) return false;
+            if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
     </script>
 </body>
-</htm
+
+</html>
