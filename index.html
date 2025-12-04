@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="vi">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+    <title>Tân</title>
+    <link rel="icon" href="logoo.png" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+    <style>
+        * {
+            box-sizing: border-box;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            /* Chặn bôi đen */
+        }
+
+        input,
+        textarea {
+            user-select: text !important;
+        }
+
+        body {
+            width: 100%;
+            height: 100vh;
+            overflow: hidden;
+            /* Khóa cuộn trên PC */
+            margin: 0;
+            padding: 0;
+            font-family: 'Nunito', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            /* --- QUAN TRỌNG: MÀU NỀN HỒNG PHẤN (PEACH) --- */
+            /* Màu này giúp logo Đỏ nổi bật và sắc nét nhất */
+            background: linear-gradient(135deg, #fdfbfb 0%, #ebedee 100%);
+            /* Dự phòng */
+            background: linear-gradient(to bottom, #ffe2e2, #eec0c6);
+            /* Màu Peach hồng nhẹ */
+            /* Hoặc thử màu này nếu thích cam hơn: linear-gradient(to right, #ffecd2 0%, #fcb69f 100%); */
+
+            color: #333;
+        }
+
+        .main-container {
+            flex: 1;
+            width: 100%;
+            max-width: 1200px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* =========================================
+           2. LOGO & ĐỒNG HỒ (MÀU ĐỎ ĐÔ)
+        ========================================= */
+        .header-wrapper {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            max-width: 1000px;
+            gap: 40px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+            flex-shrink: 0;
+        }
+
+        .logo-area {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* --- CẤU HÌNH LOGO SIÊU NÉT --- */
+        .logo-area img {
+            max-width: 160px;
+            /* Tăng kích thước hiển thị lên chút */
+            height: auto;
+
+            /* TẮT BÓNG ĐỔ ĐỂ KHÔNG BỊ NHÒE */
+            filter: none !important;
+
+            /* Tăng cường độ nét cạnh ảnh */
+            image-rendering: -webkit-optimize-contrast;
+            image-rendering: crisp-edges;
+        }
+
+        .time-container {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+
+            /* ĐỔI MÀU CHỮ SANG ĐỎ ĐÔ/TRẮNG ĐỂ HỢP NỀN */
+            /* Vì nền sáng, chữ nên màu tối hoặc đỏ đậm mới đọc được */
+            color: #b71c1c;
+            /* Đỏ đậm DTU */
+            text-shadow: 0 1px 1px rgba(255, 255, 255, 0.8);
+        }
+
+        #clock {
+            font-size: 36px;
+            /* To hơn chút cho đẹp */
+            font-weight: 800;
+            line-height: 1;
+            white-space: nowrap;
+        }
+
+        #date {
+            font-size: 15px;
+            font-weight: 700;
+            white-space: nowrap;
+            margin-top: 5px;
+            color: #555;
+            /* Ngày tháng màu xám đậm */
+        }
+
+        /* =========================================
+           3. THANH TÌM KIẾM
+        ========================================= */
+        .search-section-wrapper {
+            width: 100%;
+            max-width: 800px;
+            margin-bottom: 25px;
+            z-index: 100;
+            position: relative;
+            flex-shrink: 0;
+        }
+
+        .search-box {
+            display: flex;
+            width: 100%;
+            align-items: center;
+            /* Căn giữa dọc */
+            gap: 15px;
+            /* Khoảng cách giữa nút và ô tìm kiếm */
+        }
+
+        .input-wrapper {
+            flex-grow: 1;
+            position: relative;
+            display: flex;
+        }
+
+        .action-btn {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 50px;
+            /* Độ rộng nút */
+            height: 50px;
+            /* Độ cao nút */
+            border-radius: 50%;
+            /* Bóng mờ nhẹ */
+
+            color: #b71c1c;
+            /* Màu icon đỏ đô cho hợp theme */
+            font-size: 20px;
+            /* Kích thước icon */
+            text-decoration: none;
+
+            transition: all 0.3s ease;
+            flex-shrink: 0;
+            /* Không cho nút bị bóp méo khi màn hình nhỏ */
+        }
+
+        /* Hiệu ứng khi di chuột vào nút */
+        .action-btn:hover {
+            transform: scale(1.1) translateY(-2px);
+            /* Phóng to nhẹ */
+            background: #fff;
+            color: #d32f2f;
+            /* Đỏ tươi hơn */
+            box-shadow: 0 6px 15px rgba(183, 28, 28, 0.25);
+        }
+
+        #searchInput {
+            width: 100%;
+            padding: 15px 20px;
+            padding-right: 130px;
+            font-size: 16px;
+            border: 2px solid #fff;
+            /* Viền trắng */
+            border-radius: 30px;
+            background: rgba(255, 255, 255, 0.85);
+            /* Nền trắng đục */
+            box-shadow: 0 5px 15px rgba(183, 28, 28, 0.1);
+            /* Bóng đỏ nhạt */
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+            color: #333;
+        }
+
+        #searchInput:focus {
+            border-color: #b71c1c;
+            /* Focus viền đỏ */
+            background: #fff;
+            box-shadow: 0 4px 20px rgba(183, 28, 28, 0.2);
+        }
+
+        #clearButton {
+            position: absolute;
+            right: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 30px;
+            height: 30px;
+            border: none;
+            background: transparent;
+            color: #999;
+            font-size: 24px;
+            font-weight: bold;
+            cursor: pointer;
+            display: none;
+            padding: 0;
+        }
+
+        #resultCounter {
+            position: absolute;
+            right: 55px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #b71c1c;
+            font-size: 0.9em;
+            font-weight: 700;
+            pointer-events: none;
+        }
+
+        #suggestionsWrapper {
+            position: absolute;
+            top: 100%;
+            left: 20px;
+            right: 20px;
+            background-color: #fff;
+            border: 1px solid #eee;
+            border-top: none;
+            border-radius: 0 0 15px 15px;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 101;
+            display: none;
+            box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .suggestion-item {
+            padding: 12px 20px;
+            cursor: pointer;
+            font-family: 'Inter', sans-serif;
+        }
+
+        .suggestion-item:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* =========================================
+           4. KẾT QUẢ TÌM KIẾM
+        ========================================= */
+        #resultDisplay {
+            display: none;
+            width: 100%;
+            margin-top: 20px;
+            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+            font-family: 'Inter', sans-serif;
+            overflow-y: auto;
+            max-height: 60vh;
+        }
+
+        .result-item {
+            border: none;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+            border-radius: 12px;
+            background-color: rgba(255, 255, 255, 0.95);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .result-item:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+        }
+
+        .result-answer {
+            padding: 20px 24px;
+            line-height: 1.7;
+            flex-grow: 1;
+            overflow-wrap: break-word;
+            user-select: text;
+
+            /* --- CÁC DÒNG MỚI ĐỂ TẠO THANH CUỘN --- */
+            max-height: 400px;
+            /* Giới hạn chiều cao khung chữ (khoảng nửa màn hình) */
+            overflow-y: auto;
+            /* Tự động hiện thanh cuộn dọc khi chữ dài */
+
+            /* Làm đẹp thanh cuộn riêng cho khung này */
+            scrollbar-width: thin;
+            scrollbar-color: #b71c1c #f1f1f1;
+        }
+
+        /* Code làm đẹp thanh cuộn cho trình duyệt Chrome/Edge */
+        .result-answer::-webkit-scrollbar {
+            width: 6px;
+        }
+
+        .result-answer::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+
+        .result-answer::-webkit-scrollbar-thumb {
+            background: #b71c1c;
+            /* Màu đỏ đô */
+            border-radius: 4px;
+        }
+
+        .result-answer::-webkit-scrollbar-thumb:hover {
+            background: #d32f2f;
+        }
+
+        .result-answer strong {
+            color: #d9534f;
+        }
+
+        .result-keywords {
+            padding: 15px 24px;
+            background-color: #f1f3f5;
+            border-top: 1px solid #e9ecef;
+            font-size: 0.9em;
+            color: #555;
+        }
+
+        @media (min-width: 600px) {
+            .result-item {
+                flex-direction: row;
+            }
+
+            .result-answer {
+                flex-basis: 70%;
+            }
+
+            .result-keywords {
+                flex-basis: 30%;
+                border-top: none;
+                border-left: 1px solid #e9ecef;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .action-btn {
+                width: 42px;
+                height: 42px;
+                font-size: 18px;
+            }
+
+            .search-box {
+                gap: 10px;
+            }
+        }
+
+        /* =========================================
+           5. MENU NÚT BẤM (STYLE TRẮNG SẠCH)
+        ========================================= */
+        #mainMenuContainer {
+            display: flex;
+            flex-direction: row;
+            width: 100%;
+            max-width: 1000px;
+            margin: 0 auto;
+            justify-content: center;
+            gap: 40px;
+            padding: 0 10px;
+            transition: opacity 0.3s ease;
+        }
+
+        .column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            width: 100%;
+            align-items: stretch;
+        }
+
+        .section-title {
+            font-size: 18px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #b71c1c;
+            /* Đỏ đậm */
+            margin-bottom: 5px;
+            font-weight: 800;
+            text-align: center;
+        }
+
+        .btn {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            text-align: left;
+            width: 100%;
+            padding: 16px 20px;
+            font-size: 16px;
+            font-weight: 700;
+            color: #444;
+            text-decoration: none;
+
+            /* Nền trắng đục cho hợp nền Peach */
+            background: rgba(255, 255, 255, 0.85);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 1);
+            border-radius: 16px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+
+            transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+            opacity: 0;
+            animation: slideIn 0.5s ease-out forwards;
+        }
+
+        .btn i {
+            margin-right: 15px;
+            font-size: 20px;
+            width: 30px;
+            text-align: center;
+            flex-shrink: 0;
+            color: #b71c1c;
+            transition: transform 0.3s;
+        }
+
+        .btn:hover {
+            transform: translateY(-3px);
+            background: #fff;
+            box-shadow: 0 8px 15px rgba(183, 28, 28, 0.15);
+            /* Bóng đỏ khi hover */
+            color: #b71c1c;
+            border-color: #b71c1c;
+        }
+
+        .btn:hover i {
+            transform: scale(1.1);
+        }
+
+        /* Animation delays */
+        .column:first-child .btn:nth-of-type(1) {
+            animation-delay: 0.1s;
+        }
+
+        .column:first-child .btn:nth-of-type(2) {
+            animation-delay: 0.2s;
+        }
+
+        .column:first-child .btn:nth-of-type(3) {
+            animation-delay: 0.3s;
+        }
+
+        .column:first-child .btn:nth-of-type(4) {
+            animation-delay: 0.4s;
+        }
+
+        .column:first-child .btn:nth-of-type(5) {
+            animation-delay: 0.5s;
+        }
+
+        .column:first-child .btn:nth-of-type(6) {
+            animation-delay: 0.6s;
+        }
+
+        .column:last-child .btn:nth-of-type(1) {
+            animation-delay: 0.15s;
+        }
+
+        .column:last-child .btn:nth-of-type(2) {
+            animation-delay: 0.25s;
+        }
+
+        .column:last-child .btn:nth-of-type(3) {
+            animation-delay: 0.35s;
+        }
+
+        .column:last-child .btn:nth-of-type(4) {
+            animation-delay: 0.45s;
+        }
+
+        .column:last-child .btn:nth-of-type(5) {
+            animation-delay: 0.55s;
+        }
+
+        .column:last-child .btn:nth-of-type(6) {
+            animation-delay: 0.65s;
+        }
+
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* Trạng thái tìm kiếm */
+        body.search-active #mainMenuContainer {
+            display: none !important;
+        }
+
+        body.search-active #resultDisplay {
+            display: grid !important;
+            animation: fadeInResults 0.3s ease-out;
+        }
+
+        @keyframes fadeInResults {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .footer {
+            padding: 20px;
+            width: 100%;
+            text-align: center;
+            font-size: 13px;
+            color: #666;
+            font-weight: 600;
+            margin-top: auto;
+            opacity: 0.8;
+        }
+
+        /* Responsive Mobile */
+        @media (max-width: 850px) {
+            body {
+                height: auto;
+                min-height: 100vh;
+                overflow-y: auto;
+            }
+
+            .header-wrapper,
+            #mainMenuContainer {
+                flex-direction: column;
+                gap: 20px;
+                max-width: 500px;
+            }
+
+            .logo-area,
+            .time-container {
+                align-items: center;
+                justify-content: center;
+            }
+
+            .column {
+                align-items: stretch !important;
+            }
+
+            #resultDisplay {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .result-answer.force-full-height {
+            max-height: none !important;
+            height: auto !important;
+            overflow: visible !important;
+            border: none !important;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="main-container">
+
+        <div class="header-wrapper">
+            <div class="logo-area">
+                <img src="logotrangchu.png" alt="Logo Đại Học Duy Tân">
+            </div>
+
+            <div class="time-container">
+                <div id="clock">00:00:00</div>
+                <div id="date">Đang tải...</div>
+            </div>
+        </div>
+
+        <div class="search-section-wrapper">
+            <div class="search-box">
+
+                <a href="https://chongcau.github.io/chamsocvo/" class="action-btn" title="Chăm sóc vợ">
+                    <i class="fa-solid fa-person-dress"></i>
+                </a>
+
+                <div class="input-wrapper">
+                    <input type="text" id="searchInput" placeholder="Nhập từ khóa (Ví dụ: học phí, điểm F)..."
+                        autocomplete="off">
+                    <span id="resultCounter"></span>
+                    <button id="clearButton" title="Xóa">×</button>
+                    <div id="suggestionsWrapper"></div>
+                </div>
+
+                <a href="https://chongcau.github.io/camera/" class="action-btn" title="Camera">
+                    <i class="fa-solid fa-camera"></i>
+                </a>
+
+            </div>
+        </div>
+
+        <div id="resultDisplay"></div>
+
+        <div id="mainMenuContainer">
+            <div class="column">
+                <div class="section-title">HỌC VỤ & ĐÀO TẠO</div>
+                <a href="https://mydtu.duytan.edu.vn/Signin.aspx" class="btn"><i class="fas fa-home"></i> Cổng thông tin
+                    ĐH Duy Tân</a>
+                <a href="lichthi.html" class="btn"><i class="fa-regular fa-calendar-days"></i> Tìm nhanh môn thi</a>
+                <a href="danhsachthi.html" class="btn"><i class="fa-solid fa-list-check"></i> Danh Sách Thi</a>
+                <a href="https://chongcau.github.io/hocphi/" class="btn"><i class="fa-solid fa-coins"></i> Tính học
+                    phí</a>
+                <a href="https://pdaotao.duytan.edu.vn/ANNOUNCEMENT/Default.aspx?lang=VN" class="btn"><i
+                        class="fa-regular fa-bell"></i> THÔNG BÁO PHÒNG ĐÀO TẠO</a>
+                <a href="https://pdaotao.duytan.edu.vn/EXAM_LIST/Default.aspx?lang=VN" class="btn"><i
+                        class="fa-solid fa-globe"></i> DANH SÁCH THI PHÒNG ĐÀO TẠO</a>
+            </div>
+
+            <div class="column">
+                <div class="section-title">CỘNG ĐỒNG & KẾT NỐI</div>
+                <a href="https://t.me/s/Dai_Hoc_Duy_Tan" class="btn"><i class="fab fa-telegram-plane"></i> DTU Official
+                    Community</a>
+                <a href="https://t.me/chatsinhvienDTU" class="btn"><i class="fab fa-telegram-plane"></i> Chat DTU</a>
+                <a href="https://www.facebook.com/groups/sinhviendtu" class="btn"><i class="fa-brands fa-facebook"></i>
+                    DTU - Đại Học Duy Tân</a>
+                <a href="https://chongcau.github.io/daihocduytan/" class="btn"><i class="fa-solid fa-toolbox"></i> Tiện
+                    ích</a>
+                <a href="https://courses.duytan.edu.vn/sites/Home_ChuongTrinhDaoTao.aspx?p=home_coursesearch"
+                    class="btn"><i class="fa-solid fa-globe"></i> TRA MÔN HỌC DTU</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">© Thông tin chỉ mang tính chất tham khảo & hỗ trợ cộng đồng</div>
+
+    <script src="lock_system.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="database.js"></script>
+    <script src="script.js"></script>
+
+    <script>
+        // Đồng hồ
+        function updateClock() {
+            const now = new Date();
+            document.getElementById('clock').innerText = now.toLocaleTimeString('vi-VN', { hour12: false });
+            const dateStr = now.toLocaleDateString('vi-VN', { weekday: 'long', year: 'numeric', month: '2-digit', day: '2-digit' });
+            document.getElementById('date').innerText = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
+        }
+        setInterval(updateClock, 1000);
+        updateClock();
+
+        // Xử lý tìm kiếm
+        const searchInputDemo = document.getElementById('searchInput');
+        const clearButtonDemo = document.getElementById('clearButton');
+        if (searchInputDemo) {
+            searchInputDemo.addEventListener('input', function () {
+                if (this.value.trim() !== "") {
+                    document.body.classList.add('search-active');
+                    clearButtonDemo.style.display = 'block';
+                } else {
+                    document.body.classList.remove('search-active');
+                    clearButtonDemo.style.display = 'none';
+                }
+            });
+            if (clearButtonDemo) {
+                clearButtonDemo.addEventListener('click', function () {
+                    searchInputDemo.value = '';
+                    document.body.classList.remove('search-active');
+                    this.style.display = 'none';
+                    searchInputDemo.focus();
+                });
+            }
+        }
+
+        // BẢO MẬT
+        document.addEventListener('contextmenu', e => e.preventDefault());
+        document.onkeydown = function (e) {
+            if (e.keyCode == 123) return false;
+            if (e.ctrlKey && e.shiftKey && (e.keyCode == 'I'.charCodeAt(0) || e.keyCode == 'J'.charCodeAt(0) || e.keyCode == 'C'.charCodeAt(0))) return false;
+            if (e.ctrlKey && e.keyCode == 'U'.charCodeAt(0)) return false;
+        }
+    </script>
+</body>
+
+</html>
