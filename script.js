@@ -287,7 +287,7 @@ document.addEventListener("DOMContentLoaded", function () {
             position: 'fixed',      // Cố định để không phụ thuộc vị trí trang
             top: '-10000px',        // Đẩy ra khỏi màn hình (người dùng không thấy)
             left: '0',
-            width: originalWidth,   // Giữ nguyên chiều rộng
+            width: 'auto',   // Giữ nguyên chiều rộng
             height: 'auto',         // Chiều cao tự do
             maxHeight: 'none',      // Gỡ bỏ giới hạn chiều cao
             overflow: 'visible',    // Hiển thị toàn bộ
